@@ -1,7 +1,8 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
-import validate from './validate'
-import renderField from './renderField'
+import validate from './../../validate'
+import renderField from './../../renderField'
+import { Values } from "redux-form-website-template";
 
 const legals = ["Company", "Individual"];
 
@@ -16,9 +17,12 @@ const renderLegalSelector = ({ input, meta: { touched, error } }) => (
 );
 
 const WizardFormFirstPage = (props) => {
+  const value = (e) => {
+    let user = JSON.stringify(e, null, 2)
+    return user
+  }
   const { handleSubmit } = props
   return (
-
       <div className="col-sm-6 col-sm-offset-3 form-box">
     <fieldset>
       <div className="form-top">
@@ -29,14 +33,14 @@ const WizardFormFirstPage = (props) => {
           <i className="fa fa-user"></i>
         </div>
       </div>
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} >
       <div className="form-bottom"> 
-      <Field name="firstName" type="text" component={renderField} label="First Name"/>
+      <Field name="firstName" type="text" user={value} component={renderField} label="First Name"/>
       <Field name="lastName" type="text" component={renderField} label="Last Name"/>
       <Field name="country" type="text" component={renderField} label="Country"/>
       <Field name="city" type="text" component={renderField} label="City"/>
       <Field name="address" type="text" component={renderField} label="Address"/>
-      <Field name="address-2" type="text" component={renderField} label="Address-2"/>
+      <Field name="address_2" type="text" component={renderField} label="Address-2"/>
       <div>
         <label>Select legal form</label>
         <Field name="legalForm" component={renderLegalSelector} />
@@ -50,8 +54,8 @@ const WizardFormFirstPage = (props) => {
 }
 
 export default reduxForm({
-  form: 'wizard',                 // <------ same form name
-  destroyOnUnmount: false,        // <------ preserve form data
-  forceUnregisterOnUnmount: true,  // <------ unregister fields on unmount
+  form: 'wizard',                 
+  destroyOnUnmount: false,        
+  forceUnregisterOnUnmount: true,  
   validate
 })(WizardFormFirstPage)
